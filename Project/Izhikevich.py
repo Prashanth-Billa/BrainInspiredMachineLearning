@@ -6,14 +6,15 @@ c = -70e-3 * volt
 d = 100e-3 * volt/second
 CC = 100
 I = 0 * volt/second
-taus = 50e-3 * second
+taus = 10e-3 * second
 Vt = -40e-3 * volt
 Vr = -60e-3 * volt
 
 IzhikevichEquations = '''
-    dv/dt = ((((0.7/ms/mV)*(v-Vr)*(v-Vt)))/CC) - u/CC + I/CC    : volt
-    du/dt = (a*(b*v-u))  - (a*b*Vr)                             : volt/second
-    dI/dt = -I/taus                                             : volt/second
+    dv/dt = ((((0.7/ms/mV)*(v-Vr)*(v-Vt)))/CC) - u/CC + I/CC + Isyn/CC          : volt
+    du/dt = (a*(b*v-u))  - (a*b*Vr)                                             : volt/second
+    dI/dt = -I/taus                                                             : volt/second
+    Isyn                                                                        : volt/second
     '''
 reset = '''
     v = c

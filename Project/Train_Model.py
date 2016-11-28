@@ -31,9 +31,9 @@ P2nd = NeuronGroup(N/ K_VALUE, IzhikevichEquations, threshold=threshold, reset=r
 # --------------------connecting layer 1 and layer 2-------------------#
 syn12 = Synapses(P1st, P2nd, on_pre=Syn12Condition)
 
-for x in range(0, K_VALUE):
-    syn12.connect(i=[x * (N/K_VALUE), (x*(N/K_VALUE))+(N/K_VALUE) -1], j=x)
-
+# for j in range(0, N/K_VALUE):
+#     syn12.connect(i=[x * (N/K_VALUE), (x*(N/K_VALUE))+(N/K_VALUE) -1], j=N/K_VALUE)
+syn12.connect("i/2 == j")
 
 # ------------------------layer 3/op dynamics-------------------------#
 
@@ -41,11 +41,13 @@ for x in range(0, K_VALUE):
 P3rd = NeuronGroup(NUM_OUTPUT_CLASSES, IzhikevichEquations, threshold=threshold, reset=reset)
 
 syn23 = Synapses(P2nd, P3rd, '''w : 1
-                        dx/dt = -x / taupre  : 1 (event-driven)''',
-               on_pre='''I += w * volt/second
-                         x += apre
+                        dx/dt = -x / taupre  : 1 (event-driven)
+                             ''',
+               on_pre='''x += apre
+                         I += w * volt/second
+                         w += -.003
                          ''',
-               on_post='''w += x - 0.00015
+               on_post='''w += x - 0.00017 +.003
                         ''')
 syn23.connect()
 
@@ -73,21 +75,23 @@ for index in range(0, NumOfDigits):
 Pinh = SpikeGeneratorGroup(NUM_OUTPUT_CLASSES, inhNeurons, inhNeuronTime * ms)
 PExh = SpikeGeneratorGroup(NUM_OUTPUT_CLASSES, exNeurons, exNeuronsTime * ms)
 
-sinh = Synapses(Pinh, P3rd, on_pre='I += 0.5e+3*volt/second')
+sinh = Synapses(Pinh, P3rd, on_pre='I -= 9e+3*volt/second')
 sinh.connect('i==j')
 
-sh = Synapses(PExh, P3rd, on_pre='I -= 0.5e+3*volt/second')
-sh.connect('i==j')
+
+sinex = Synapses(PExh, P3rd, on_pre='I += 9e+3*volt/second')
+sinex.connect('i==j')
 
 v_mon = getStateMonitor(P3rd)['voltage']
 isyn_mon = getStateMonitor(P3rd)['current']
 s_mon = getSpikeMonitor(P3rd)
+s_mon_3 = getSpikeMonitor(P3rd)
 
-run(DIGIT_DURATION*NumOfDigits)
-
+# run(DIGIT_DURATION*NumOfDigits)
+run (1000 * ms)
 print "Finished training {0} number ".format(NumOfDigits)
 print "************"
-# print "Training Error  : {0}".format(getError(s_mon, labels))
+print "Training Error  : {0}".format(getError(s_mon, labels))
 print syn23.w
 figure(figsize=(6,4))
 plot(s_mon.t/ms, s_mon.i, '.k')
@@ -105,5 +109,3 @@ ax2.set_xlabel('Time (ms)')
 ax2.set_ylabel('Synaptic Current [nA]')
 tight_layout()
 show()
-
-
