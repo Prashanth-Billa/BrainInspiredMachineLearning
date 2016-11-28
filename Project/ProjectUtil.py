@@ -5,8 +5,85 @@ import os, struct
 from array import array as pyarray
 from numpy import array, int8, uint8, zeros
 from brian2 import *
+from Constants import *
 
-def load_mnist(dataset="training", digits=np.arange(10), path="."):
+def getIndicesInh(label):
+    arr = []
+    for i in range(0, 10):
+        if label == i:
+            continue
+        arr.append(i)
+    return arr
+
+def getStateMonitor(layer):
+    monitor = {}
+    monitor['voltage'] = StateMonitor(layer, variables='v', record=[0])
+    monitor['current'] = StateMonitor(layer, variables='I', record=[0])
+    return monitor
+
+def getSpikeMonitor(layer):
+    return SpikeMonitor(layer)
+
+def getError(spikeMonitorObject, targetLabels):
+    map = {}
+
+    for index in range(0, NumOfDigits):
+        map[index] = []
+
+    for index in range(0, len(spikeMonitorObject.i)):
+        key = int((spikeMonitorObject.t / ms)[index] / (DIGIT_DURATION / ms + 1))
+        if key in map:
+            arr = map[key]
+            arr.append(spikeMonitorObject.i[index])
+        else:
+            arr = []
+            arr.append(spikeMonitorObject.i[index])
+            map[key] = arr
+
+    err = 0
+    total = NumOfDigits
+
+    for key, value in map.iteritems():
+        arr = []
+        a, b, c, d = getMaxfreqNeuronIndex(value)
+        print "Prediction :{0}, Target: {1}".format(a, targetLabels[key])
+        if a != targetLabels[key]:
+            err = err + 1
+        map[key] = arr
+
+    return float(err)/total
+
+def getMaxfreqNeuronIndex(indices):
+    countarr = {}
+    #supports upto 100 neurons
+    for i in range(0, len(indices)):
+        key = indices[i]
+        if key in countarr:
+            v = countarr[indices[i]]
+            v = v + 1
+            countarr[indices[i]] = v
+        else:
+            countarr[indices[i]] = 1
+
+    maxVal = -1
+    index = -1
+
+    nextMaxVal = -1
+    nextIndex = -1
+    for i in range(0, MAX_NUM_NEURONS):
+        if i in countarr:
+            if countarr[i] > maxVal:
+                nextMaxVal = maxVal
+                nextIndex = index
+                maxVal = countarr[i]
+                index = i
+            elif countarr[i] > nextMaxVal:
+                nextMaxVal = countarr[i]
+                nextIndex = i
+
+    return index, maxVal, nextIndex, nextMaxVal
+
+def load_mnist_60000(dataset="training", digits=np.arange(10), path="."):
     if dataset == "training":
         fname_img = 'C:/Users/Prash/Desktop/psych268_bilm-master/code/train-images.idx3-ubyte'
         fname_lbl = 'C:/Users/Prash/Desktop/psych268_bilm-master/code/train-labels.idx1-ubyte'
@@ -75,20 +152,3 @@ def data_load_mnist(digits = None):
         for d in digits:
             idx+= labels == d
         return data[idx,:], labels[idx]
-
-def getIndicesInh(label):
-    arr = []
-    for i in range(0, 10):
-        if label == i:
-            continue
-        arr.append(i)
-    return arr
-
-def getStateMonitor(layer):
-    monitor = {}
-    monitor['voltage'] = StateMonitor(layer, variables='v', record=[0])
-    monitor['current'] = StateMonitor(layer, variables='I', record=[0])
-    return monitor
-
-def getSpikeMonitor(layer):
-    return SpikeMonitor(layer)

@@ -87,7 +87,7 @@ run(DIGIT_DURATION*NumOfDigits)
 
 print "Finished training {0} number ".format(NumOfDigits)
 print "************"
-
+# print "Training Error  : {0}".format(getError(s_mon, labels))
 print syn23.w
 figure(figsize=(6,4))
 plot(s_mon.t/ms, s_mon.i, '.k')
