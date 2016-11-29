@@ -33,7 +33,7 @@ syn12 = Synapses(P1st, P2nd, on_pre=Syn12Condition)
 
 # for j in range(0, N/K_VALUE):
 #     syn12.connect(i=[x * (N/K_VALUE), (x*(N/K_VALUE))+(N/K_VALUE) -1], j=N/K_VALUE)
-syn12.connect("i/2 == j")
+syn12.connect("i/K_VALUE == j")
 
 # ------------------------layer 3/op dynamics-------------------------#
 
@@ -87,8 +87,8 @@ isyn_mon = getStateMonitor(P3rd)['current']
 s_mon = getSpikeMonitor(P3rd)
 s_mon_3 = getSpikeMonitor(P3rd)
 
-# run(DIGIT_DURATION*NumOfDigits)
-run (1000 * ms)
+run(DIGIT_DURATION*NumOfDigits)
+
 print "Finished training {0} number ".format(NumOfDigits)
 print "************"
 print "Training Error  : {0}".format(getError(s_mon, labels))

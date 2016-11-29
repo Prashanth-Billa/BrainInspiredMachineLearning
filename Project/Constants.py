@@ -12,7 +12,7 @@ taupost = 14 * ms
 apre = 103e-3
 apost = -40
 
-NumOfDigits = 10#data.shape[0]
+NumOfDigits = 200#data.shape[0]
 NUM_OUTPUT_CLASSES = 10
 DIGITS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
