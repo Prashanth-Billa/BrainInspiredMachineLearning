@@ -9,7 +9,7 @@ from Constants import *
 
 def getIndicesInh(label):
     arr = []
-    for i in range(0, 10):
+    for i in range(0, NUM_OUTPUT_CLASSES):
         if label == i:
             continue
         arr.append(i)
