@@ -12,8 +12,10 @@ taupost = 14 * ms
 apre = 103e-2
 apost = -40
 
-NumOfDigits = 10#data.shape[0]
+NumOfDigitsTrain = 200
+NumOfDigitsTest = 10
+
 NUM_OUTPUT_CLASSES = 10
-DIGITS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+DIGITS = [0, 4, 6, 2, 3, 5, 1, 7, 8, 9]
 
 Syn12Condition = 'I += 50 * volt/second'

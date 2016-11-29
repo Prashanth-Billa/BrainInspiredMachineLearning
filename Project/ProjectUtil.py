@@ -24,13 +24,17 @@ def getStateMonitor(layer):
 def getSpikeMonitor(layer):
     return SpikeMonitor(layer)
 
-def getError(spikeMonitorObject, targetLabels):
+def getError(spikeMonitorObject, targetLabels, phase=0):
     map = {}
+    NumOfDigits = 0
+    if(phase == 0):
+        NumOfDigits = NumOfDigitsTrain
+    else:
+        NumOfDigits = NumOfDigitsTest
+
     for index in range(0, NumOfDigits):
         map[index] = []
-    print spikeMonitorObject.i
-    print spikeMonitorObject.t
-    # return 0
+
     for index in range(0, len(spikeMonitorObject.i)):
         key = int((spikeMonitorObject.t / ms)[index] / (DIGIT_DURATION / ms + 0.0001))
         if key in map:

@@ -14,7 +14,7 @@ data = (data.T / (data.T).sum(axis=0)).T
 inarr = []
 tarr = []
 
-for index in range(0, NumOfDigits):
+for index in range(0, NumOfDigitsTrain):
     print "Label : {0}".format(labels[index])
     ret = np.array(np.nonzero(data[index].reshape(28, 28))).T
     indicesArray = np.array(ret[:, 0])
@@ -47,7 +47,7 @@ syn23 = Synapses(P2nd, P3rd, '''w : 1
                          I += w * volt/second
                          w += -.0003
                          ''',
-               on_post='''w += x - 0.0002 +.0003
+               on_post='''w += x - 0.002 +.0003
                         ''')
 syn23.connect()
 
@@ -62,7 +62,7 @@ exNeurons = []
 exNeuronsTime = []
 exarr = []
 
-for index in range(0, NumOfDigits):
+for index in range(0, NumOfDigitsTrain):
     label = labels[index]
     exarr = []
     exarr.append(label)
@@ -89,8 +89,8 @@ s_mon_3 = getSpikeMonitor(P3rd)
 
 weightmon = StateMonitor(syn23, variables=['w'], record=[22])
 
-run(DIGIT_DURATION*NumOfDigits)
-print "Finished training {0} number ".format(NumOfDigits)
+run(DIGIT_DURATION*NumOfDigitsTrain)
+print "Finished training {0} number ".format(NumOfDigitsTrain)
 print "************"
 print "Training Error  : {0}".format(getError(s_mon, labels))
 print syn23.w
