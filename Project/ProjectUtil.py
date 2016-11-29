@@ -9,14 +9,9 @@ from Constants import *
 
 def getIndicesInh(label):
     arr = []
-<<<<<<< HEAD
     label_index = DIGITS.index(label)
     for i in range(0,NUM_OUTPUT_CLASSES):
         if label_index == i:
-=======
-    for i in DIGITS:
-        if label == i:
->>>>>>> d4419981fbeccaa28eb70fdc0e90bf9a80292706
             continue
         arr.append(i)
     return arr

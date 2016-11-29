@@ -92,6 +92,9 @@ run(DIGIT_DURATION*NumOfDigitsTrain)
 print "Finished training {0} number ".format(NumOfDigitsTrain)
 print "************"
 print "Training Error  : {0}".format(getError(s_mon, labels))
+weightsFile = open('trainedWeights.txt', 'w')
+for item in syn23.w:
+    weightsFile.write("%s " % item)
 print syn23.w
 figure(figsize=(6,4))
 plot(s_mon.t/ms, s_mon.i, '.k')

@@ -12,17 +12,12 @@ taupost = 14 * ms
 apre = 103e-2
 apost = -40
 
-<<<<<<< HEAD
+NumOfDigitsTrain = 10
 
-NumOfDigitsTrain = 200
-=======
-NumOfDigitsTrain = 500
->>>>>>> d4419981fbeccaa28eb70fdc0e90bf9a80292706
 NumOfDigitsTest = 10
 
 NUM_OUTPUT_CLASSES = 2
-DIGITS = [4
-    , 1]
+DIGITS = [4, 1]
 
 timeInh = []
 for i in range(0, NUM_OUTPUT_CLASSES-1):
