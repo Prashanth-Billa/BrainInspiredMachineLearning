@@ -87,14 +87,10 @@ isyn_mon = getStateMonitor(P3rd)['current']
 s_mon = getSpikeMonitor(P3rd)
 s_mon_3 = getSpikeMonitor(P3rd)
 
-<<<<<<< HEAD
-run(DIGIT_DURATION*NumOfDigits)
-
-=======
 weightmon = StateMonitor(syn23, variables=['w'], record=[22])
 
 run(DIGIT_DURATION*NumOfDigits)
->>>>>>> origin/master
+
 print "Finished training {0} number ".format(NumOfDigits)
 print "************"
 print "Training Error  : {0}".format(getError(s_mon, labels))

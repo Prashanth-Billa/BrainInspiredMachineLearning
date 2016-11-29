@@ -28,13 +28,10 @@ P2nd = NeuronGroup(N/ K_VALUE, IzhikevichEquations, threshold=threshold, reset=r
 
 # --------------------connecting layer 1 and layer 2-------------------#
 syn12 = Synapses(P1st, P2nd, on_pre=Syn12Condition)
-<<<<<<< HEAD
 
 for x in range(0, K_VALUE):
     syn12.connect("i/K_VALUE==j")
-=======
-syn12.connect("i/2 == j")
->>>>>>> origin/master
+
 
 
 # ------------------------layer 3/op dynamics-------------------------#
