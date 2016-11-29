@@ -45,9 +45,9 @@ syn23 = Synapses(P2nd, P3rd, '''w : 1
                              ''',
                on_pre='''x += apre
                          I += w * volt/second
-                         w += -.003
+                         w += -.0003
                          ''',
-               on_post='''w += x - 0.00017 +.003
+               on_post='''w += x - 0.0002 +.0003
                         ''')
 syn23.connect()
 
@@ -75,11 +75,11 @@ for index in range(0, NumOfDigits):
 Pinh = SpikeGeneratorGroup(NUM_OUTPUT_CLASSES, inhNeurons, inhNeuronTime * ms)
 PExh = SpikeGeneratorGroup(NUM_OUTPUT_CLASSES, exNeurons, exNeuronsTime * ms)
 
-sinh = Synapses(Pinh, P3rd, on_pre='I -= 9e+3*volt/second')
+sinh = Synapses(Pinh, P3rd, on_pre='I -= 1200*volt/second')
 sinh.connect('i==j')
 
 
-sinex = Synapses(PExh, P3rd, on_pre='I += 9e+3*volt/second')
+sinex = Synapses(PExh, P3rd, on_pre='I += 800*volt/second')
 sinex.connect('i==j')
 
 v_mon = getStateMonitor(P3rd)['voltage']
@@ -87,8 +87,14 @@ isyn_mon = getStateMonitor(P3rd)['current']
 s_mon = getSpikeMonitor(P3rd)
 s_mon_3 = getSpikeMonitor(P3rd)
 
+<<<<<<< HEAD
 run(DIGIT_DURATION*NumOfDigits)
 
+=======
+weightmon = StateMonitor(syn23, variables=['w'], record=[22])
+
+run(DIGIT_DURATION*NumOfDigits)
+>>>>>>> origin/master
 print "Finished training {0} number ".format(NumOfDigits)
 print "************"
 print "Training Error  : {0}".format(getError(s_mon, labels))
@@ -99,6 +105,10 @@ xlabel('Time (ms)')
 ylabel('Neuron index')
 ylim([-1,len(P1st)+1])
 tight_layout()
+
+show()
+plot(weightmon.t/ms, weightmon.w[0], 'k', linewidth=3, alpha=.6)
+show()
 
 figure(figsize=(9, 9))
 ax = axes()

@@ -9,7 +9,7 @@ MAX_NUM_NEURONS = 10# Max number of output neurons. Used in finding error
 #STDP Parameters
 taupre = 34 * ms;
 taupost = 14 * ms
-apre = 103e-3
+apre = 103e-2
 apost = -40
 
 NumOfDigits = 200#data.shape[0]
