@@ -9,8 +9,14 @@ from Constants import *
 
 def getIndicesInh(label):
     arr = []
+<<<<<<< HEAD
+    label_index = DIGITS.index(label)
+    for i in range(0,NUM_OUTPUT_CLASSES):
+        if label_index == i:
+=======
     for i in DIGITS:
         if label == i:
+>>>>>>> d4419981fbeccaa28eb70fdc0e90bf9a80292706
             continue
         arr.append(i)
     return arr
@@ -51,8 +57,8 @@ def getError(spikeMonitorObject, targetLabels, phase=0):
     for key, value in map.iteritems():
         arr = []
         a, b, c, d = getMaxfreqNeuronIndex(value)
-        print "Prediction :{0}, Target: {1}".format(a, targetLabels[key])
-        if a != targetLabels[key]:
+        print "Prediction :{0}, Target: {1}".format(DIGITS[a], targetLabels[key])
+        if DIGITS[a] != targetLabels[key]:
             err = err + 1
         map[key] = arr
 

@@ -54,8 +54,7 @@ syn23.connect()
 
 # ---------------inhibitory neuron---------------#
 
-timeInh = [2, 2, 2, 2, 2, 2, 2, 2, 2]
-timeExh = [2]
+
 inhNeurons = []
 inhNeuronTime = []
 exNeurons = []
@@ -65,7 +64,7 @@ exarr = []
 for index in range(0, NumOfDigitsTrain):
     label = labels[index]
     exarr = []
-    exarr.append(label)
+    exarr.append(DIGITS.index(label))
     inhNeurons.extend(getIndicesInh(label))
     inhNeuronTime.extend([(x + index*DIGIT_DURATION/ms) for x in timeInh])
     exNeurons.extend(exarr)
