@@ -12,7 +12,7 @@ taupost = 14 * ms
 apre = 103e-2
 apost = -40
 
-NumOfDigitsTrain = 200
+NumOfDigitsTrain = 500
 NumOfDigitsTest = 10
 
 NUM_OUTPUT_CLASSES = 10
