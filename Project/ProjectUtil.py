@@ -89,15 +89,15 @@ def getMaxfreqNeuronIndex(indices):
 
     return index, maxVal, nextIndex, nextMaxVal
 
-def load_mnist_60000(dataset="training", digits=np.arange(10), path="."):
+def load_mnist_dataset(dataset="training", digits=np.arange(10), path="."):
     if dataset == "training":
-        fname_img = 'C:/Users/Prash/Desktop/psych268_bilm-master/code/train-images.idx3-ubyte'
-        fname_lbl = 'C:/Users/Prash/Desktop/psych268_bilm-master/code/train-labels.idx1-ubyte'
+        fname_img = 'C:/Users/Prash/Desktop/psych268_bilm-master/Project/train-images.idx3-ubyte'
+        fname_lbl = 'C:/Users/Prash/Desktop/psych268_bilm-master/Project/train-labels.idx1-ubyte'
     elif dataset == "testing":
-        fname_img = os.path.join(path, 't10k-images.idx3-ubyte')
-        fname_lbl = os.path.join(path, 't10k-labels.idx1-ubyte')
+        fname_img = 'C:/Users/Prash/Desktop/psych268_bilm-master/code/t10k-images.idx3-ubyte'
+        fname_lbl = 'C:/Users/Prash/Desktop/psych268_bilm-master/code/t10k-labels.idx1-ubyte'
     else:
-        raise ValueError("dataset must be 'testing' or 'training'")
+        raise ValueError("dataset = training/testing'")
 
     flbl = open(fname_lbl, 'rb')
     magic_nr, size = struct.unpack(">II", flbl.read(8))
@@ -131,8 +131,8 @@ def data_load_mnist(digits = None):
     *labels* labels of the 1000 images
     '''
     import os.path
-    url_data = "https://drive.google.com/uc?export=download&id=0B7CeL_WOYFxpTl94RHkxN0pfMEk"
-    url_targets = "https://drive.google.com/uc?export=download&id=0B7CeL_WOYFxpZmY4T1hYSHJNTjQ"
+    url_data = "mnist_data.npy"
+    url_targets = "mnist_targets.npy"
     fname_data = 'mnist_data.npy'
     fname_targets = 'mnist_targets.npy'
     if sys.version_info[0] == 2:

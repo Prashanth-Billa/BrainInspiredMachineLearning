@@ -5,9 +5,10 @@ import numpy as np
 
 # ------------------------layer 1 dynamics-------------------------#
 
-#data, labels = load_mnist_60000('training', digits=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9], path=os.path.dirname(os.path.abspath(__file__)))  #200 sample
+#data, labels = load_mnist_dataset('training', digits=DIGITS)
 #data = (data.T / (data.T).sum(axis=0)).T
-
+#data = data.reshape(data.shape[0], 28 * 28)
+#labels = labels.reshape(data.shape[0], )
 
 data, labels = data_load_mnist(DIGITS)
 data = (data.T / (data.T).sum(axis=0)).T
@@ -16,7 +17,7 @@ inarr = []
 tarr = []
 
 for index in range(0, NumOfDigitsTrain):
-    #print "Label : {0}".format(labels[index])
+    print "Label : {0}".format(labels[index])
     ret = np.array(np.nonzero(data[index].reshape(28, 28))).T
     indicesArray = np.array(ret[:, 0])
     timeArray = (np.array(ret[:, 1])*6) + (index * DIGIT_DURATION/ms)
