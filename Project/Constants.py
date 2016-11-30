@@ -13,7 +13,7 @@ taupost = 14 * ms
 apre = 103e-2
 apost = -40
 
-NumOfDigitsTrain = 250
+NumOfDigitsTrain = 750
 NumOfDigitsTest = 10
 
 NUM_OUTPUT_CLASSES = len(DIGITS)

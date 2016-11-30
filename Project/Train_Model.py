@@ -43,9 +43,9 @@ syn23 = Synapses(P2nd, P3rd, '''w : 1
                              ''',
                on_pre='''x += apre/5
                          I += w * volt/second
-                         w += -.0003
+                         w += -.0005
                          ''',
-               on_post='''w += x - 0.002 +.0003
+               on_post='''w += x - 0.002 +.0005
                         ''')
 syn23.connect()
 
