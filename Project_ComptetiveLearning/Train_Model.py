@@ -80,11 +80,11 @@ for index in range(0, NumOfDigitsTrain):
 Pinh = SpikeGeneratorGroup(NUM_OUTPUT_CLASSES, inhNeurons, inhNeuronTime * ms)
 PExh = SpikeGeneratorGroup(NUM_OUTPUT_CLASSES, exNeurons, exNeuronsTime * ms)
 
-sinh = Synapses(Pinh, P3rd, on_pre='isyn -= 1200*nA')
+sinh = Synapses(Pinh, P3rd, on_pre='isyn -= 500*nA')
 sinh.connect('i==j')
 
 
-sinex = Synapses(PExh, P3rd, on_pre='isyn += 800*nA')
+sinex = Synapses(PExh, P3rd, on_pre='isyn += 500*nA')
 sinex.connect('i==j')
 
 v_mon = getStateMonitor(P3rd)['voltage']
