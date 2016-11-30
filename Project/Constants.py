@@ -13,7 +13,7 @@ taupost = 14 * ms
 apre = 103e-2
 apost = -40
 
-NumOfDigitsTrain = 800
+NumOfDigitsTrain = 900
 NumOfDigitsTest = 10
 
 NUM_OUTPUT_CLASSES = len(DIGITS)
@@ -54,4 +54,5 @@ timeExh5 = [120]
 timeExh6 = [145]
 timeExh7 = [170]
 
-Syn12Condition = 'I += 25 * volt/second'
+Syn12ConditionTraining = 'I += 50 * volt/second'
+Syn12ConditionTesting = 'I += 25 * volt/second'

@@ -27,7 +27,7 @@ P1st = SpikeGeneratorGroup(M, inarr, tarr * ms)
 P2nd = NeuronGroup(N/ K_VALUE, IzhikevichEquations, threshold=threshold, reset=reset)
 
 # --------------------connecting layer 1 and layer 2-------------------#
-syn12 = Synapses(P1st, P2nd, on_pre=Syn12Condition)
+syn12 = Synapses(P1st, P2nd, on_pre=Syn12ConditionTesting)
 syn12.connect("i/K_VALUE == j")
 
 
@@ -38,7 +38,7 @@ P3rd = NeuronGroup(NUM_OUTPUT_CLASSES, IzhikevichEquations, threshold=threshold,
 
 syn23 = Synapses(P2nd, P3rd, '''w : 1
                         ''',
-               on_pre='''I += 50 * w * volt/second
+               on_pre='''I += 100 * w * volt/second
                         ''')
 
 

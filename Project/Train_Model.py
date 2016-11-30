@@ -5,8 +5,9 @@ import numpy as np
 
 # ------------------------layer 1 dynamics-------------------------#
 
-# data, labels = load_mnist_60000('training', digits=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9], path=os.path.dirname(os.path.abspath(__file__)))  #200 sample
-# data = (data.T / (data.T).sum(axis=0)).T
+#data, labels = load_mnist_60000('training', digits=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9], path=os.path.dirname(os.path.abspath(__file__)))  #200 sample
+#data = (data.T / (data.T).sum(axis=0)).T
+
 
 data, labels = data_load_mnist(DIGITS)
 data = (data.T / (data.T).sum(axis=0)).T
@@ -29,7 +30,7 @@ P1st = SpikeGeneratorGroup(M, inarr, tarr * ms)
 P2nd = NeuronGroup(N/ K_VALUE, IzhikevichEquations, threshold=threshold, reset=reset)
 
 # --------------------connecting layer 1 and layer 2-------------------#
-syn12 = Synapses(P1st, P2nd, on_pre=Syn12Condition)
+syn12 = Synapses(P1st, P2nd, on_pre=Syn12ConditionTraining)
 
 syn12.connect("i/K_VALUE == j")
 
@@ -172,37 +173,37 @@ PExh7 = SpikeGeneratorGroup(NUM_OUTPUT_CLASSES, exNeurons7, exNeuronsTime7 * ms)
 
 sinh1 = Synapses(Pinh1, P3rd, on_pre='I -= 900*volt/second')
 sinh1.connect('i==j')
-sinex1 = Synapses(PExh1, P3rd, on_pre='I += 650*volt/second')
+sinex1 = Synapses(PExh1, P3rd, on_pre='I += 690*volt/second')
 sinex1.connect('i==j')
 
 sinh2 = Synapses(Pinh2, P3rd, on_pre='I -= 900*volt/second')
 sinh2.connect('i==j')
-sinex2 = Synapses(PExh2, P3rd, on_pre='I += 650*volt/second')
+sinex2 = Synapses(PExh2, P3rd, on_pre='I += 690*volt/second')
 sinex2.connect('i==j')
 
 sinh3 = Synapses(Pinh3, P3rd, on_pre='I -= 900*volt/second')
 sinh3.connect('i==j')
-sinex3 = Synapses(PExh3, P3rd, on_pre='I += 650*volt/second')
+sinex3 = Synapses(PExh3, P3rd, on_pre='I += 690*volt/second')
 sinex3.connect('i==j')
 
 sinh4 = Synapses(Pinh4, P3rd, on_pre='I -= 900*volt/second')
 sinh4.connect('i==j')
-sinex4 = Synapses(PExh4, P3rd, on_pre='I += 650*volt/second')
+sinex4 = Synapses(PExh4, P3rd, on_pre='I += 690*volt/second')
 sinex4.connect('i==j')
 
 sinh5 = Synapses(Pinh5, P3rd, on_pre='I -= 900*volt/second')
 sinh5.connect('i==j')
-sinex5 = Synapses(PExh5, P3rd, on_pre='I += 650*volt/second')
+sinex5 = Synapses(PExh5, P3rd, on_pre='I += 690*volt/second')
 sinex5.connect('i==j')
 
 sinh6 = Synapses(Pinh6, P3rd, on_pre='I -= 900*volt/second')
 sinh6.connect('i==j')
-sinex6 = Synapses(PExh6, P3rd, on_pre='I += 650*volt/second')
+sinex6 = Synapses(PExh6, P3rd, on_pre='I += 690*volt/second')
 sinex6.connect('i==j')
 
 sinh7 = Synapses(Pinh7, P3rd, on_pre='I -= 900*volt/second')
 sinh7.connect('i==j')
-sinex7 = Synapses(PExh7, P3rd, on_pre='I += 650*volt/second')
+sinex7 = Synapses(PExh7, P3rd, on_pre='I += 690*volt/second')
 sinex7.connect('i==j')
 
 v_mon = getStateMonitor(P3rd)['voltage']
