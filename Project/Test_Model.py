@@ -38,7 +38,7 @@ P3rd = NeuronGroup(NUM_OUTPUT_CLASSES, IzhikevichEquations, threshold=threshold,
 
 syn23 = Synapses(P2nd, P3rd, '''w : 1
                         ''',
-               on_pre='''I += 140 * w * volt/second
+               on_pre='''I += 50 * w * volt/second
                         ''')
 
 

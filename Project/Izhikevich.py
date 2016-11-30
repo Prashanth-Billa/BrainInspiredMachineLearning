@@ -11,10 +11,9 @@ Vt = -40e-3 * volt
 Vr = -60e-3 * volt
 
 IzhikevichEquations = '''
-    dv/dt = ((((0.7/ms/mV)*(v-Vr)*(v-Vt)))/CC) - u/CC + I/CC + Isyn/CC          : volt
+    dv/dt = ((((0.7/ms/mV)*(v-Vr)*(v-Vt)))/CC) - u/CC + I/CC                    : volt
     du/dt = (a*(b*v-u))  - (a*b*Vr)                                             : volt/second
     dI/dt = -I/taus                                                             : volt/second
-    Isyn                                                                        : volt/second
     '''
 reset = '''
     v = c
