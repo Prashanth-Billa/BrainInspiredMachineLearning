@@ -11,7 +11,7 @@ data = (data.T / (data.T).sum(axis=0)).T
 inarr = []
 tarr = []
 
-start = data.shape[0] - 50
+start = 0#data.shape[0] - 50
 for index in range(start, start + NumOfDigitsTest):
     print "Label : {0}".format(labels[index - start])
     ret = np.array(np.nonzero(data[index - start].reshape(28, 28))).T
@@ -38,7 +38,7 @@ P3rd = NeuronGroup(NUM_OUTPUT_CLASSES, IzhikevichEquations, threshold=threshold,
 
 syn23 = Synapses(P2nd, P3rd, '''w : 1
                         ''',
-               on_pre='''I += 100 * w * volt/second
+               on_pre='''I += 140 * w * volt/second
                         ''')
 
 
@@ -55,7 +55,7 @@ syn23.connect()
 # 0.008, 0.008, 0.008, 0.059, 0.133, 0.154, 0.152, 0.155, 0.052, 0.027, 0.041, 0.072, 0.124, 0.008,
 # 0.008, 0.008, 0.021, 0.047, 0.083, 0.092, 0.122, 0.126, 0.114, 0.146, 0.156, 0.061, 0.008, 0.008]
 
-syn23.w = np.genfromtxt("trainedWeights.txt")
+syn23.w = np.genfromtxt("weightsFile.txt")
 
 v_mon = getStateMonitor(P3rd)['voltage']
 isyn_mon = getStateMonitor(P3rd)['current']

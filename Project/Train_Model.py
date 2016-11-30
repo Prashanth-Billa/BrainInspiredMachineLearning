@@ -18,7 +18,8 @@ for index in range(0, NumOfDigitsTrain):
     print "Label : {0}".format(labels[index])
     ret = np.array(np.nonzero(data[index].reshape(28, 28))).T
     indicesArray = np.array(ret[:, 0])
-    timeArray = np.array(ret[:, 1]) + (index * DIGIT_DURATION/ms)
+    timeArray = (np.array(ret[:, 1])*6) + (index * DIGIT_DURATION/ms)
+    print timeArray
     inarr.extend(indicesArray)
     tarr.extend(timeArray)
 
@@ -31,9 +32,7 @@ P2nd = NeuronGroup(N/ K_VALUE, IzhikevichEquations, threshold=threshold, reset=r
 # --------------------connecting layer 1 and layer 2-------------------#
 syn12 = Synapses(P1st, P2nd, on_pre=Syn12Condition)
 
-# for j in range(0, N/K_VALUE):
-#     syn12.connect(i=[x * (N/K_VALUE), (x*(N/K_VALUE))+(N/K_VALUE) -1], j=N/K_VALUE)
-syn12.connect("i/2 == j")
+syn12.connect("i/K_VALUE == j")
 
 # ------------------------layer 3/op dynamics-------------------------#
 
@@ -55,31 +54,115 @@ syn23.connect()
 # ---------------inhibitory neuron---------------#
 
 
-inhNeurons = []
-inhNeuronTime = []
-exNeurons = []
-exNeuronsTime = []
-exarr = []
+inhNeurons1 = []
+inhNeuronTime1 = []
+exNeurons1 = []
+exNeuronsTime1 = []
+exarr1 = []
+
+inhNeurons2 = []
+inhNeuronTime2 = []
+exNeurons2 = []
+exNeuronsTime2 = []
+exarr3 = []
+
+inhNeurons3 = []
+inhNeuronTime3 = []
+exNeurons3 = []
+exNeuronsTime3 = []
+exarr3 = []
+
+inhNeurons4 = []
+inhNeuronTime4 = []
+exNeurons4 = []
+exNeuronsTime4 = []
+exarr4 = []
+
+inhNeurons5 = []
+inhNeuronTime5 = []
+exNeurons5 = []
+exNeuronsTime5 = []
+exarr5 = []
 
 for index in range(0, NumOfDigitsTrain):
     label = labels[index]
-    exarr = []
-    exarr.append(DIGITS.index(label))
-    inhNeurons.extend(getIndicesInh(label))
-    inhNeuronTime.extend([(x + index*DIGIT_DURATION/ms) for x in timeInh])
-    exNeurons.extend(exarr)
-    exNeuronsTime.extend([(x + index*DIGIT_DURATION/ms) for x in timeExh])
+    exarr1 = []
+    exarr1.append(DIGITS.index(label))
+    inhNeurons1.extend(getIndicesInh(label))
+    inhNeuronTime1.extend([(x + index*DIGIT_DURATION/ms) for x in timeInh1])
+    exNeurons1.extend(exarr1)
+    exNeuronsTime1.extend([(x + index*DIGIT_DURATION/ms) for x in timeExh1])
+    
+    exarr2 = []
+    exarr2.append(DIGITS.index(label))
+    inhNeurons2.extend(getIndicesInh(label))
+    inhNeuronTime2.extend([(x + index*DIGIT_DURATION/ms) for x in timeInh2])
+    exNeurons2.extend(exarr2)
+    exNeuronsTime2.extend([(x + index*DIGIT_DURATION/ms) for x in timeExh2])
+    
+    exarr3 = []
+    exarr3.append(DIGITS.index(label))
+    inhNeurons3.extend(getIndicesInh(label))
+    inhNeuronTime3.extend([(x + index*DIGIT_DURATION/ms) for x in timeInh3])
+    exNeurons3.extend(exarr3)
+    exNeuronsTime3.extend([(x + index*DIGIT_DURATION/ms) for x in timeExh3])
+    
+    exarr4 = []
+    exarr4.append(DIGITS.index(label))
+    inhNeurons4.extend(getIndicesInh(label))
+    inhNeuronTime4.extend([(x + index*DIGIT_DURATION/ms) for x in timeInh4])
+    exNeurons4.extend(exarr4)
+    exNeuronsTime4.extend([(x + index*DIGIT_DURATION/ms) for x in timeExh4])
+    
+    exarr5 = []
+    exarr5.append(DIGITS.index(label))
+    inhNeurons5.extend(getIndicesInh(label))
+    inhNeuronTime5.extend([(x + index*DIGIT_DURATION/ms) for x in timeInh5])
+    exNeurons5.extend(exarr5)
+    exNeuronsTime5.extend([(x + index*DIGIT_DURATION/ms) for x in timeExh5])
 
 
-Pinh = SpikeGeneratorGroup(NUM_OUTPUT_CLASSES, inhNeurons, inhNeuronTime * ms)
-PExh = SpikeGeneratorGroup(NUM_OUTPUT_CLASSES, exNeurons, exNeuronsTime * ms)
+Pinh1 = SpikeGeneratorGroup(NUM_OUTPUT_CLASSES, inhNeurons1, inhNeuronTime1 * ms)
+PExh1 = SpikeGeneratorGroup(NUM_OUTPUT_CLASSES, exNeurons1, exNeuronsTime1 * ms)
 
-sinh = Synapses(Pinh, P3rd, on_pre='I -= 1200*volt/second')
-sinh.connect('i==j')
+Pinh2 = SpikeGeneratorGroup(NUM_OUTPUT_CLASSES, inhNeurons2, inhNeuronTime2 * ms)
+PExh2 = SpikeGeneratorGroup(NUM_OUTPUT_CLASSES, exNeurons2, exNeuronsTime2 * ms)
+
+Pinh3 = SpikeGeneratorGroup(NUM_OUTPUT_CLASSES, inhNeurons3, inhNeuronTime3 * ms)
+PExh3 = SpikeGeneratorGroup(NUM_OUTPUT_CLASSES, exNeurons3, exNeuronsTime3 * ms)
+
+Pinh4 = SpikeGeneratorGroup(NUM_OUTPUT_CLASSES, inhNeurons4, inhNeuronTime4 * ms)
+PExh4 = SpikeGeneratorGroup(NUM_OUTPUT_CLASSES, exNeurons4, exNeuronsTime4 * ms)
+
+Pinh5 = SpikeGeneratorGroup(NUM_OUTPUT_CLASSES, inhNeurons5, inhNeuronTime5 * ms)
+PExh5 = SpikeGeneratorGroup(NUM_OUTPUT_CLASSES, exNeurons5, exNeuronsTime5 * ms)
 
 
-sinex = Synapses(PExh, P3rd, on_pre='I += 800*volt/second')
-sinex.connect('i==j')
+
+sinh1 = Synapses(Pinh1, P3rd, on_pre='I -= 900*volt/second')
+sinh1.connect('i==j')
+sinex1 = Synapses(PExh1, P3rd, on_pre='I += 450*volt/second')
+sinex1.connect('i==j')
+
+sinh2 = Synapses(Pinh2, P3rd, on_pre='I -= 900*volt/second')
+sinh2.connect('i==j')
+sinex2 = Synapses(PExh2, P3rd, on_pre='I += 450*volt/second')
+sinex2.connect('i==j')
+
+sinh3 = Synapses(Pinh3, P3rd, on_pre='I -= 900*volt/second')
+sinh3.connect('i==j')
+sinex3 = Synapses(PExh3, P3rd, on_pre='I += 450*volt/second')
+sinex3.connect('i==j')
+
+sinh4 = Synapses(Pinh4, P3rd, on_pre='I -= 900*volt/second')
+sinh4.connect('i==j')
+sinex4 = Synapses(PExh4, P3rd, on_pre='I += 450*volt/second')
+sinex4.connect('i==j')
+
+sinh5 = Synapses(Pinh5, P3rd, on_pre='I -= 900*volt/second')
+sinh5.connect('i==j')
+sinex5 = Synapses(PExh5, P3rd, on_pre='I += 450*volt/second')
+sinex5.connect('i==j')
 
 v_mon = getStateMonitor(P3rd)['voltage']
 isyn_mon = getStateMonitor(P3rd)['current']
@@ -92,11 +175,12 @@ run(DIGIT_DURATION*NumOfDigitsTrain)
 print "Finished training {0} number ".format(NumOfDigitsTrain)
 print "************"
 print "Training Error  : {0}".format(getError(s_mon, labels))
-weightsFile = open('trainedWeights.txt', 'w')
+weightsFile = open('weightsFile.txt', 'w')
 for item in syn23.w:
     weightsFile.write("%s " % item)
+weightsFile.close()
 print syn23.w
-figure(figsize=(6,4))
+figure(figsize=(10,10))
 plot(s_mon.t/ms, s_mon.i, '.k')
 xlabel('Time (ms)')
 ylabel('Neuron index')
