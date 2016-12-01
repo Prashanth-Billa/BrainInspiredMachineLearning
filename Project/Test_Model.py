@@ -10,21 +10,18 @@ data = (data.T / (data.T).sum(axis=0)).T
 
 inarr = []
 tarr = []
-isSpiralProcessing = True
+
 ret = None
-
-
 start = data.shape[0] - 100
 for index in range(start, start + NumOfDigitsTest):
-    if isSpiralProcessing == True:
-        arr = spiralData(data[index-start].reshape(28, 28))
+    print "Label : {0}".format(labels[index])
+    if SPIRAL_PROCESSING == True:
+        arr = spiralData(data[index].reshape(28, 28))
         ret = np.array(np.nonzero(np.array(arr).reshape(14, 4*M - 4))).T
     else:
-         ret = np.array(np.nonzero(data[index - start].reshape(28, 28))).T
-            
-    print "Label : {0}".format(labels[index - start])    
+        ret = np.array(np.nonzero(data[index - start].reshape(28, 28))).T
     indicesArray = np.array(ret[:, 0])
-    timeArray = np.array(ret[:, 1]*6) + ((index - start) * DIGIT_DURATION / ms)
+    timeArray = np.array(ret[:, 1]) + ((index - start) * DIGIT_DURATION / ms)
     inarr.extend(indicesArray)
     tarr.extend(timeArray)
 
@@ -46,7 +43,7 @@ P3rd = NeuronGroup(NUM_OUTPUT_CLASSES, IzhikevichEquations, threshold=threshold,
 
 syn23 = Synapses(P2nd, P3rd, '''w : 1
                         ''',
-               on_pre='''I += 500 * w * volt/second
+               on_pre='''I += 100 * w * volt/second
                         ''')
 
 

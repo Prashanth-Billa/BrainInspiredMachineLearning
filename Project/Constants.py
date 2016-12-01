@@ -16,6 +16,8 @@ apost = -40
 NumOfDigitsTrain = 900
 NumOfDigitsTest = 10
 
+SPIRAL_PROCESSING = False
+
 NUM_OUTPUT_CLASSES = len(DIGITS)
 
 timeInh1 = []

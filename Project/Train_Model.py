@@ -13,11 +13,10 @@ data, labels = data_load_mnist(DIGITS)
 data = (data.T / (data.T).sum(axis=0)).T
 inarr = []
 tarr = []
-isSpiralProcessing = True
 ret = None
 
 for index in range(0, NumOfDigitsTrain):
-    if isSpiralProcessing == True:
+    if SPIRAL_PROCESSING == True:
         arr = spiralData(data[index].reshape(28, 28))
         ret = np.array(np.nonzero(np.array(arr).reshape(14, 4*M - 4))).T
     else:

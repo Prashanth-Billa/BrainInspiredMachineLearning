@@ -64,4 +64,5 @@ bag.fit(X_train, y_train)
 print "***BAGGING (30 Classifiers)***"
 print "Accuracy bagging {0}".format(1 - np.mean(bag.predict(X_test) != y_test))      
 fpr, tpr, thresholds = metrics.roc_curve(y_test, bag.predict_proba(X_test)[:, 1], pos_label=1)
+plt.plot(fpr, tpr, c='r')
 print "AUC for test data bagging: {0}".format(metrics.auc(fpr, tpr))
