@@ -47,9 +47,7 @@ syn23 = Synapses(P2nd, P3rd, '''w : 1
                         dy/dt = -y / taupost : 1 (event-driven)''',
              on_pre='''isyn += w*amp
                         x += apre
-                        w += y''',
-             on_post='''y += apost
-                        w += x-alpha*w''')
+                        w += y''')
 
 
 syn23.connect()
@@ -64,6 +62,8 @@ run(DIGIT_DURATION*NumOfDigitsTest)
 
 print "Accuracy: {0}".format(1 - getError(s_mon, labels, 1))
 
+#debugging
+print syn23.w
 figure(figsize=(6,4))
 plot(s_mon.t/ms, s_mon.i, '.k')
 xlabel('Time (ms)')

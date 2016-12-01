@@ -12,7 +12,7 @@ taupre = 20*ms; taupost = taupre
 apre = 1.0e-12; apost = apre * taupre / taupost * 1.0
 alpha = 0.01
 
-NumOfDigitsTrain = 250
+NumOfDigitsTrain = 200
 NumOfDigitsTest = 10
 
 NUM_OUTPUT_CLASSES = len(DIGITS)

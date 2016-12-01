@@ -180,37 +180,37 @@ PExh7 = SpikeGeneratorGroup(NUM_OUTPUT_CLASSES, exNeurons7, exNeuronsTime7 * ms)
 
 sinh1 = Synapses(Pinh1, P3rd, on_pre='isyn-= 500*nA')
 sinh1.connect('i==j')
-sinex1 = Synapses(PExh1, P3rd, on_pre='isyn+ =  500*nA')
+sinex1 = Synapses(PExh1, P3rd, on_pre='isyn+=  500*nA')
 sinex1.connect('i==j')
 
 sinh2 = Synapses(Pinh2, P3rd, on_pre='isyn-= 500*nA')
 sinh2.connect('i==j')
-sinex2 = Synapses(PExh2, P3rd, on_pre='isyn+ =  690*volt/second')
+sinex2 = Synapses(PExh2, P3rd, on_pre='isyn+=  500*nA')
 sinex2.connect('i==j')
 
 sinh3 = Synapses(Pinh3, P3rd, on_pre='isyn-= 500*nA')
 sinh3.connect('i==j')
-sinex3 = Synapses(PExh3, P3rd, on_pre='isyn+ =  500*nA')
+sinex3 = Synapses(PExh3, P3rd, on_pre='isyn+=  500*nA')
 sinex3.connect('i==j')
 
-sinh4 = Synapses(Pinh4, P3rd, on_pre='isyn- =  500*nA')
+sinh4 = Synapses(Pinh4, P3rd, on_pre='isyn-=  500*nA')
 sinh4.connect('i==j')
-sinex4 = Synapses(PExh4, P3rd, on_pre='isyn+ =  500*nA')
+sinex4 = Synapses(PExh4, P3rd, on_pre='isyn+=  500*nA')
 sinex4.connect('i==j')
 
-sinh5 = Synapses(Pinh5, P3rd, on_pre='isyn- =  500*nA')
+sinh5 = Synapses(Pinh5, P3rd, on_pre='isyn-=  500*nA')
 sinh5.connect('i==j')
-sinex5 = Synapses(PExh5, P3rd, on_pre='isyn+ =  500*nA')
+sinex5 = Synapses(PExh5, P3rd, on_pre='isyn+=  500*nA')
 sinex5.connect('i==j')
 
-sinh6 = Synapses(Pinh6, P3rd, on_pre='isyn- =  500*nA')
+sinh6 = Synapses(Pinh6, P3rd, on_pre='isyn-=  500*nA')
 sinh6.connect('i==j')
-sinex6 = Synapses(PExh6, P3rd, on_pre='isyn+ =  500*nA')
+sinex6 = Synapses(PExh6, P3rd, on_pre='isyn+=  500*nA')
 sinex6.connect('i==j')
 
-sinh7 = Synapses(Pinh7, P3rd, on_pre='isyn- =  900*volt/second')
+sinh7 = Synapses(Pinh7, P3rd, on_pre='isyn-=  500*nA')
 sinh7.connect('i==j')
-sinex7 = Synapses(PExh7, P3rd, on_pre='isyn+ =  500*nA')
+sinex7 = Synapses(PExh7, P3rd, on_pre='isyn+=  500*nA')
 sinex7.connect('i==j')
 
 v_mon = getStateMonitor(P3rd)['voltage']
