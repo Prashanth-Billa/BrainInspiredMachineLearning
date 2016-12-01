@@ -5,6 +5,9 @@ import os, struct
 from array import array as pyarray
 import numpy as np
 from numpy import array, int8, uint8, zeros
+from sklearn import metrics
+from sklearn.ensemble import BaggingClassifier
+from sklearn.model_selection import KFold
 
 def load_mnist_60000(dataset="training", digits=np.arange(10), path="."):
     if dataset == "training":
@@ -48,10 +51,17 @@ NUM_TEST = 10
 X_train, X_test = data[:NUM_TRAIN], data[NUM_TRAIN:NUM_TRAIN + NUM_TEST]
 y_train, y_test = labels[:NUM_TRAIN], labels[NUM_TRAIN:NUM_TRAIN + NUM_TEST]
 
-mlp = MLPClassifier(hidden_layer_sizes=(100000), max_iter=100000, alpha=1e-9,
-                    solver='sgd', verbose=10, random_state=1,
-                    learning_rate_init=.1)
+mlp = MLPClassifier(hidden_layer_sizes=(28), max_iter=100000, alpha=1e-9,
+                    solver='adam', random_state=1, warm_start=True)
 
 mlp.fit(X_train, y_train)
 print("Training set score: %f" % mlp.score(X_train, y_train))
 print("Test set score: %f" % mlp.score(X_test, y_test))
+#
+bag = BaggingClassifier(mlp, 30, max_samples=0.7, bootstrap=True, oob_score=True)
+bag.fit(X_train, y_train)   
+
+print "***BAGGING (30 Classifiers)***"
+print "Accuracy bagging {0}".format(1 - np.mean(bag.predict(X_test) != y_test))      
+fpr, tpr, thresholds = metrics.roc_curve(y_test, bag.predict_proba(X_test)[:, 1], pos_label=1)
+print "AUC for test data bagging: {0}".format(metrics.auc(fpr, tpr))
