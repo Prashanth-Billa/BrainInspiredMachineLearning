@@ -11,13 +11,17 @@ import numpy as np
 
 data, labels = data_load_mnist(DIGITS)
 data = (data.T / (data.T).sum(axis=0)).T
-
 inarr = []
 tarr = []
+isSpiralProcessing = True
+ret = None
 
 for index in range(0, NumOfDigitsTrain):
-    print "Label : {0}".format(labels[index])
-    ret = np.array(np.nonzero(data[index].reshape(28, 28))).T
+    if isSpiralProcessing == True:
+        arr = spiralData(data[index].reshape(28, 28))
+        ret = np.array(np.nonzero(np.array(arr).reshape(14, 4*M - 4))).T
+    else:
+         ret = np.array(np.nonzero(data[index].reshape(28, 28))).T
     indicesArray = np.array(ret[:, 0])
     timeArray = (np.array(ret[:, 1])*6) + (index * DIGIT_DURATION/ms)
     inarr.extend(indicesArray)
@@ -46,7 +50,7 @@ syn23 = Synapses(P2nd, P3rd, '''w : 1
                          I += w * volt/second
                          w += -.00055
                          ''',
-               on_post='''w += x - 0.002 +.00055
+               on_post='''w += x - 0.003 +.00055
                         ''')
 syn23.connect()
 
@@ -221,52 +225,52 @@ PExh10 = SpikeGeneratorGroup(NUM_OUTPUT_CLASSES, exNeurons10, exNeuronsTime10 * 
 
 sinh1 = Synapses(Pinh1, P3rd, on_pre='I -= 1200*volt/second')
 sinh1.connect('i==j')
-sinex1 = Synapses(PExh1, P3rd, on_pre='I += 700*volt/second')
+sinex1 = Synapses(PExh1, P3rd, on_pre='I += 750*volt/second')
 sinex1.connect('i==j')
 
 sinh2 = Synapses(Pinh2, P3rd, on_pre='I -= 1200*volt/second')
 sinh2.connect('i==j')
-sinex2 = Synapses(PExh2, P3rd, on_pre='I += 700*volt/second')
+sinex2 = Synapses(PExh2, P3rd, on_pre='I += 750*volt/second')
 sinex2.connect('i==j')
 
 sinh3 = Synapses(Pinh3, P3rd, on_pre='I -= 1200*volt/second')
 sinh3.connect('i==j')
-sinex3 = Synapses(PExh3, P3rd, on_pre='I += 700*volt/second')
+sinex3 = Synapses(PExh3, P3rd, on_pre='I += 750*volt/second')
 sinex3.connect('i==j')
 
 sinh4 = Synapses(Pinh4, P3rd, on_pre='I -= 1200*volt/second')
 sinh4.connect('i==j')
-sinex4 = Synapses(PExh4, P3rd, on_pre='I += 700*volt/second')
+sinex4 = Synapses(PExh4, P3rd, on_pre='I += 750*volt/second')
 sinex4.connect('i==j')
 
 sinh5 = Synapses(Pinh5, P3rd, on_pre='I -= 1200*volt/second')
 sinh5.connect('i==j')
-sinex5 = Synapses(PExh5, P3rd, on_pre='I += 700*volt/second')
+sinex5 = Synapses(PExh5, P3rd, on_pre='I += 750*volt/second')
 sinex5.connect('i==j')
 
 sinh6 = Synapses(Pinh6, P3rd, on_pre='I -= 1200*volt/second')
 sinh6.connect('i==j')
-sinex6 = Synapses(PExh6, P3rd, on_pre='I += 700*volt/second')
+sinex6 = Synapses(PExh6, P3rd, on_pre='I += 750*volt/second')
 sinex6.connect('i==j')
 
 sinh7 = Synapses(Pinh7, P3rd, on_pre='I -= 1200*volt/second')
 sinh7.connect('i==j')
-sinex7 = Synapses(PExh7, P3rd, on_pre='I += 700*volt/second')
+sinex7 = Synapses(PExh7, P3rd, on_pre='I += 750*volt/second')
 sinex7.connect('i==j')
 
 sinh8 = Synapses(Pinh8, P3rd, on_pre='I -= 1200*volt/second')
 sinh8.connect('i==j')
-sinex8 = Synapses(PExh8, P3rd, on_pre='I += 700*volt/second')
+sinex8 = Synapses(PExh8, P3rd, on_pre='I += 750*volt/second')
 sinex8.connect('i==j')
 
 sinh9 = Synapses(Pinh9, P3rd, on_pre='I -= 1200*volt/second')
 sinh9.connect('i==j')
-sinex9 = Synapses(PExh9, P3rd, on_pre='I += 700*volt/second')
+sinex9 = Synapses(PExh9, P3rd, on_pre='I += 750*volt/second')
 sinex9.connect('i==j')
 
 sinh10 = Synapses(Pinh10, P3rd, on_pre='I -= 1200*volt/second')
 sinh10.connect('i==j')
-sinex10 = Synapses(PExh10, P3rd, on_pre='I += 700*volt/second')
+sinex10 = Synapses(PExh10, P3rd, on_pre='I += 750*volt/second')
 sinex10.connect('i==j')
 
 v_mon = getStateMonitor(P3rd)['voltage']
@@ -279,7 +283,7 @@ weightmon = StateMonitor(syn23, variables=['w'], record=[22])
 run(DIGIT_DURATION*NumOfDigitsTrain)
 print "Finished training {0} number ".format(NumOfDigitsTrain)
 print "************"
-print "Training Error  : {0}".format(getError(s_mon, labels))
+#print "Training Error  : {0}".format(getError(s_mon, labels))
 weightsFile = open('weightsFile.txt', 'w')
 for item in syn23.w:
     weightsFile.write("%s " % item)

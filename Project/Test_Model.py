@@ -11,7 +11,7 @@ data = (data.T / (data.T).sum(axis=0)).T
 inarr = []
 tarr = []
 
-start = data.shape[0] - 50
+start = data.shape[0] - 100
 for index in range(start, start + NumOfDigitsTest):
     print "Label : {0}".format(labels[index - start])
     ret = np.array(np.nonzero(data[index - start].reshape(28, 28))).T
@@ -38,7 +38,7 @@ P3rd = NeuronGroup(NUM_OUTPUT_CLASSES, IzhikevichEquations, threshold=threshold,
 
 syn23 = Synapses(P2nd, P3rd, '''w : 1
                         ''',
-               on_pre='''I += 300 * w * volt/second
+               on_pre='''I += 500 * w * volt/second
                         ''')
 
 
