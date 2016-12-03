@@ -16,7 +16,8 @@ apost = -40
 NumOfDigitsTrain = 900
 NumOfDigitsTest = 10
 
-SPIRAL_PROCESSING = False
+Data_Processing_method = "spiralwalk"
+# methods are to be rowwise, spiralwith0appending, spiralwalk
 
 NUM_OUTPUT_CLASSES = len(DIGITS)
 

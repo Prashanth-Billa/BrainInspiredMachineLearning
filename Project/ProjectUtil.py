@@ -199,3 +199,41 @@ def spiralData(data):
                 ret.append(0)
                 
     return ret
+
+def spiralWalk(data):
+    k = 0
+    l = 0
+    i = 0
+    m = M
+    n = N
+    ret = []
+    while k < m and l < n:
+        numProcessed = 0
+        for i in range(l, n):
+            numProcessed = numProcessed + 1
+            ret.append(data[k][i])
+
+        k = k + 1
+
+        for i in range(k, m):
+            numProcessed = numProcessed + 1
+            ret.append(data[i][n-1])
+
+        n = n - 1
+
+        if k < m:
+            for i in range(n-1, l-1, -1):
+                numProcessed = numProcessed + 1
+                ret.append(data[m-1][i])
+
+            m = m - 1
+
+        if l < n:
+            for i in range(m-1, k -1, -1):
+                numProcessed = numProcessed + 1
+                ret.append(data[i][l])
+
+            l = l + 1
+
+
+    return ret
