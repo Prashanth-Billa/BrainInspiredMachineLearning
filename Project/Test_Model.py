@@ -15,11 +15,16 @@ ret = None
 start = data.shape[0] - 100
 for index in range(start, start + NumOfDigitsTest):
     print "Label : {0}".format(labels[index])
-    if SPIRAL_PROCESSING == True:
+    if Data_Processing_method == "spiralwith0appending":
         arr = spiralData(data[index].reshape(28, 28))
         ret = np.array(np.nonzero(np.array(arr).reshape(14, 4*M - 4))).T
+
+    elif Data_Processing_method == "spiralwalk":
+        arr = spiralWalk(data[index].reshape(28, 28))
+        ret = np.array(np.nonzero(np.array(arr).reshape(28,28))).T
+
     else:
-        ret = np.array(np.nonzero(data[index - start].reshape(28, 28))).T
+        ret = np.array(np.nonzero(data[index].reshape(28, 28))).T
     indicesArray = np.array(ret[:, 0])
     timeArray = np.array(ret[:, 1]) + ((index - start) * DIGIT_DURATION / ms)
     inarr.extend(indicesArray)
