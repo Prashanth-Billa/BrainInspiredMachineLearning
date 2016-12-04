@@ -15,18 +15,18 @@ ret = None
 start = data.shape[0] - 100
 for index in range(start, start + NumOfDigitsTest):
     print "Label : {0}".format(labels[index])
-    if Data_Processing_method == "spiralwith0appending":
+    if PROCESSING_METHOD == DIAGONALSTRIP:
+        arr = printDiagonalStrips(data[index].reshape(28, 28))
+        ret = np.array(np.nonzero(np.array(arr).reshape(28, 28))).T
+    elif PROCESSING_METHOD == SPIRAL1:
         arr = spiralData(data[index].reshape(28, 28))
         ret = np.array(np.nonzero(np.array(arr).reshape(14, 4*M - 4))).T
-
-    elif Data_Processing_method == "spiralwalk":
-        arr = spiralWalk(data[index].reshape(28, 28))
-        ret = np.array(np.nonzero(np.array(arr).reshape(28,28))).T
-
-    else:
+    elif PROCESSING_METHOD == SPIRAL2:
+        pass
+    elif PROCESSING_METHOD == ROWWISE:
         ret = np.array(np.nonzero(data[index].reshape(28, 28))).T
     indicesArray = np.array(ret[:, 0])
-    timeArray = np.array(ret[:, 1]) + ((index - start) * DIGIT_DURATION / ms)
+    timeArray = (np.array(ret[:, 1])) + (index * DIGIT_DURATION/ms)
     inarr.extend(indicesArray)
     tarr.extend(timeArray)
 
@@ -48,13 +48,13 @@ P3rd = NeuronGroup(NUM_OUTPUT_CLASSES, IzhikevichEquations, threshold=threshold,
 
 syn23 = Synapses(P2nd, P3rd, '''w : 1
                         ''',
-               on_pre='''I += 100 * w * volt/second
+               on_pre='''I += 300 * w * volt/second
                         ''')
 
 
 syn23.connect()
 
-syn23.w = np.genfromtxt("weightsFile.txt")
+syn23.w = np.genfromtxt("weightsFile60k.txt")
 
 v_mon = getStateMonitor(P3rd)['voltage']
 isyn_mon = getStateMonitor(P3rd)['current']

@@ -4,29 +4,28 @@ from Constants import *
 import numpy as np
 # ------------------------layer 1 dynamics-------------------------#
 
-#data, labels = load_mnist_dataset('training', digits=DIGITS)
-#data = (data.T / (data.T).sum(axis=0)).T
-#data = data.reshape(data.shape[0], 28 * 28)
-#labels = labels.reshape(data.shape[0], )
-
-data, labels = data_load_mnist(DIGITS)
+data, labels = load_mnist_dataset('training', digits=DIGITS)
 data = (data.T / (data.T).sum(axis=0)).T
+data = data.reshape(data.shape[0], 28 * 28)
+labels = labels.reshape(data.shape[0], )
+
+#data, labels = data_load_mnist(DIGITS)
+#data = (data.T / (data.T).sum(axis=0)).T
 inarr = []
 tarr = []
 ret = None
 
 for index in range(0, NumOfDigitsTrain):
-    if Data_Processing_method == "spiralwith0appending":
+    if PROCESSING_METHOD == DIAGONALSTRIP:
+        arr = printDiagonalStrips(data[index].reshape(28, 28))
+        ret = np.array(np.nonzero(np.array(arr).reshape(28, 28))).T
+    elif PROCESSING_METHOD == SPIRAL1:
         arr = spiralData(data[index].reshape(28, 28))
         ret = np.array(np.nonzero(np.array(arr).reshape(14, 4*M - 4))).T
-
-    elif Data_Processing_method == "spiralwalk":
-        arr = spiralWalk(data[index].reshape(28, 28))
-        ret = np.array(np.nonzero(np.array(arr).reshape(28,28))).T
-
-    else:
-         ret = np.array(np.nonzero(data[index].reshape(28, 28))).T
-
+    elif PROCESSING_METHOD == SPIRAL2:
+        pass
+    elif PROCESSING_METHOD == ROWWISE:
+        ret = np.array(np.nonzero(data[index].reshape(28, 28))).T
     indicesArray = np.array(ret[:, 0])
     timeArray = (np.array(ret[:, 1])*6) + (index * DIGIT_DURATION/ms)
     inarr.extend(indicesArray)
@@ -289,7 +288,7 @@ run(DIGIT_DURATION*NumOfDigitsTrain)
 print "Finished training {0} number ".format(NumOfDigitsTrain)
 print "************"
 #print "Training Error  : {0}".format(getError(s_mon, labels))
-weightsFile = open('weightsFile.txt', 'w')
+weightsFile = open('weightsFile60k.txt', 'w')
 for item in syn23.w:
     weightsFile.write("%s " % item)
 weightsFile.close()

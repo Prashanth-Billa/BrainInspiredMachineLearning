@@ -199,41 +199,28 @@ def spiralData(data):
                 ret.append(0)
                 
     return ret
-
-def spiralWalk(data):
-    k = 0
-    l = 0
-    i = 0
-    m = M
-    n = N
-    ret = []
-    while k < m and l < n:
-        numProcessed = 0
-        for i in range(l, n):
-            numProcessed = numProcessed + 1
-            ret.append(data[k][i])
-
-        k = k + 1
-
-        for i in range(k, m):
-            numProcessed = numProcessed + 1
-            ret.append(data[i][n-1])
-
-        n = n - 1
-
-        if k < m:
-            for i in range(n-1, l-1, -1):
-                numProcessed = numProcessed + 1
-                ret.append(data[m-1][i])
-
-            m = m - 1
-
-        if l < n:
-            for i in range(m-1, k -1, -1):
-                numProcessed = numProcessed + 1
-                ret.append(data[i][l])
-
-            l = l + 1
-
-
-    return ret
+    
+def printDiagonalStrips(data):
+    n = data.shape[0]
+    alt = 0
+    ele = []
+    for slice in range(0, 2 * n - 1):
+        temp = []
+        if slice < n:
+            z = 0
+        else:
+            z = slice - n + 1;
+        if alt == 0:
+            for j in range(z, slice - z + 1):
+                ele.append(data[j][slice - j])
+        elif alt == 1:
+            for j in range(z, slice - z + 1):
+                temp.append(data[j][slice - j])
+            temp.reverse()
+            ele.extend(temp)
+        
+        if alt == 0:
+            alt = 1
+        else:
+            alt = 0
+    return ele

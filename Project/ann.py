@@ -43,23 +43,24 @@ def load_mnist_60000(dataset="training", digits=np.arange(10), path="."):
 data, labels = load_mnist_60000('training', digits=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9], path=os.path.dirname(os.path.abspath(__file__)))  #200 sample
 data = (data.T / (data.T).sum(axis=0)).T
 
-data = data.reshape(60000, 784)
+
+data = data.reshape(data.shape[0], 784)
 data = data/np.float32(256)
 
-NUM_TRAIN = 200
+NUM_TRAIN = 900
 NUM_TEST = 10
 X_train, X_test = data[:NUM_TRAIN], data[NUM_TRAIN:NUM_TRAIN + NUM_TEST]
 y_train, y_test = labels[:NUM_TRAIN], labels[NUM_TRAIN:NUM_TRAIN + NUM_TEST]
 
-mlp = MLPClassifier(hidden_layer_sizes=(28), max_iter=100000, alpha=1e-9,
-                    solver='adam', random_state=1, warm_start=True)
+mlp = MLPClassifier(hidden_layer_sizes=(14), max_iter=100000, 
+                    solver='adam', warm_start=True)
 
 mlp.fit(X_train, y_train)
 print("Training set score: %f" % mlp.score(X_train, y_train))
 print("Test set score: %f" % mlp.score(X_test, y_test))
 #
 bag = BaggingClassifier(mlp, 30, max_samples=0.7, bootstrap=True, oob_score=True)
-bag.fit(X_train, y_train)   
+bag.fit(X_train, y_train) 
 
 print "***BAGGING (30 Classifiers)***"
 print "Accuracy bagging {0}".format(1 - np.mean(bag.predict(X_test) != y_test))      
