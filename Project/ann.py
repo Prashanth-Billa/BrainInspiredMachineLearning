@@ -1,69 +1,52 @@
-import matplotlib.pyplot as plt
-from sklearn.datasets import fetch_mldata
-from sklearn.neural_network import MLPClassifier
-import os, struct
-from array import array as pyarray
-import numpy as np
-from numpy import array, int8, uint8, zeros
-from sklearn import metrics
-from sklearn.ensemble import BaggingClassifier
-from sklearn.model_selection import KFold
-
-def load_mnist_60000(dataset="training", digits=np.arange(10), path="."):
-    if dataset == "training":
-        fname_img = 'C:/Users/Prash/Desktop/psych268_bilm-master/code/train-images.idx3-ubyte'
-        fname_lbl = 'C:/Users/Prash/Desktop/psych268_bilm-master/code/train-labels.idx1-ubyte'
-    elif dataset == "testing":
-        fname_img = os.path.join(path, 't10k-images.idx3-ubyte')
-        fname_lbl = os.path.join(path, 't10k-labels.idx1-ubyte')
-    else:
-        raise ValueError("dataset must be 'testing' or 'training'")
-
-    flbl = open(fname_lbl, 'rb')
-    magic_nr, size = struct.unpack(">II", flbl.read(8))
-    lbl = pyarray("b", flbl.read())
-    flbl.close()
-
-    fimg = open(fname_img, 'rb')
-    magic_nr, size, rows, cols = struct.unpack(">IIII", fimg.read(16))
-    img = pyarray("B", fimg.read())
-    fimg.close()
-
-    ind = [ k for k in range(size) if lbl[k] in digits ]
-    N = len(ind)
-
-    images = zeros((N, rows, cols), dtype=uint8)
-    labels = zeros((N, 1), dtype=int8)
-    for i in range(len(ind)):
-        images[i] = array(img[ ind[i]*rows*cols : (ind[i]+1)*rows*cols ]).reshape((rows, cols))
-        labels[i] = lbl[ind[i]]
-
-    return images, labels
-    
-data, labels = load_mnist_60000('training', digits=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9], path=os.path.dirname(os.path.abspath(__file__)))  #200 sample
-data = (data.T / (data.T).sum(axis=0)).T
-
-
-data = data.reshape(data.shape[0], 784)
-data = data/np.float32(256)
-
-NUM_TRAIN = 900
-NUM_TEST = 10
-X_train, X_test = data[:NUM_TRAIN], data[NUM_TRAIN:NUM_TRAIN + NUM_TEST]
-y_train, y_test = labels[:NUM_TRAIN], labels[NUM_TRAIN:NUM_TRAIN + NUM_TEST]
-
-mlp = MLPClassifier(hidden_layer_sizes=(14), max_iter=100000, 
-                    solver='adam', warm_start=True)
-
-mlp.fit(X_train, y_train)
-print("Training set score: %f" % mlp.score(X_train, y_train))
-print("Test set score: %f" % mlp.score(X_test, y_test))
+#!/bin/python
+#-----------------------------------------------------------------------------
+# Author: Emre Neftci
 #
-bag = BaggingClassifier(mlp, 30, max_samples=0.7, bootstrap=True, oob_score=True)
-bag.fit(X_train, y_train) 
+# Creation Date : 21-10-2016
+# Last Modified : Fri 21 Oct 2016 03:31:40 PM PDT
+#
+# Copyright : (c) 
+# Licence : GPLv2
+#----------------------------------------------------------------------------- 
+import tensorflow as tf
+import numpy as np
 
-print "***BAGGING (30 Classifiers)***"
-print "Accuracy bagging {0}".format(1 - np.mean(bag.predict(X_test) != y_test))      
-fpr, tpr, thresholds = metrics.roc_curve(y_test, bag.predict_proba(X_test)[:, 1], pos_label=1)
-plt.plot(fpr, tpr, c='r')
-print "AUC for test data bagging: {0}".format(metrics.auc(fpr, tpr))
+sess = tf.InteractiveSession()
+
+
+from tensorflow.examples.tutorials.mnist import input_data
+mnist = input_data.read_data_sets('MNIST_data', one_hot=True)
+print mnist
+
+x = tf.placeholder(tf.float32, shape=[None,784])
+t = tf.placeholder(tf.float32, shape=[None,10])
+
+W1 = tf.Variable(np.random.uniform(size=[784,28]).astype('float32')-.5)
+b1 = tf.Variable(np.zeros([28], 'float32'))
+
+W2 = tf.Variable(np.random.uniform(size=[28,14]).astype('float32')-.5)
+b2 = tf.Variable(np.zeros([14], 'float32'))
+
+W3 = tf.Variable(np.random.uniform(size=[14,10]).astype('float32')-.5)
+b3 = tf.Variable(np.zeros([10], 'float32'))
+
+h1 = tf.matmul(x,W1)+b1
+a = tf.matmul(h1,W2)+b2
+b = tf.matmul(a,W3)+b3
+y = tf.nn.sigmoid(b)
+
+cost = tf.reduce_mean(tf.reduce_sum((y-t)**2,1))
+
+train_step = tf.train.GradientDescentOptimizer(.05).minimize(cost)
+
+sess.run(tf.initialize_all_variables())
+
+N_epochs=10000
+for i in range(N_epochs):
+    data,labels = mnist.train.next_batch(100)
+    sess.run(train_step, feed_dict={x:data,t:labels})
+    if i%100==0:
+        print cost.eval(feed_dict={x:mnist.train.images,t:mnist.train.labels})
+        pred = np.argmax(y.eval(feed_dict={x:mnist.validation.images,t:mnist.validation.labels}),axis=1)
+        true_label = np.argmax(mnist.validation.labels,axis=1)
+        print np.mean(pred == true_label)*100
